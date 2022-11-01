@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>게시판 생성</title>
+    <style>
+        textarea, input {
+            width: 90%;
+            resize: none;
+        }
+
+        textarea {
+            height: 10em;
+        }
+
+        div.error {
+            color: red
+        }
+
+        button {
+            font-size: 1.5em;
+            border-radius: 10px;
+            background-color: blue;
+            color: white;
+        }
+
+        button:hover {
+            background-color: red;
+            color: black;
+        }
+
+        button.menu {
+            background-color: red;
+            color: black;
+        }
+
+        button.menu:hover {
+            background-color: blue;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <h1>게시판 생성</h1>
+    <hr>
+    <form method="post" style="display: inline">
+        {% csrf_token %}
+        <label>
+            <input name="title" style="font-size: 1.5em" placeholder="제목">
+        </label>
+        <label>
+            <input name="tag" placeholder="태그 #으로 구분">
+        </label>
+        <p><label>
+            <textarea name="content" placeholder="내용"></textarea>
+        </label></p>
+        {% if messages %}
+            {% for message in messages %}
+            <div class="{{ message.tags }}">{{ message.message }}</div>
+            {% endfor %}
+        {% endif %}
+        <button type="submit">게시</button>
+    </form>
+    <button class="menu" type="button" onclick="location.href='/boards/'">취소</button>
+</body>
+</html>

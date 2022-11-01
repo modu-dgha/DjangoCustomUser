@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>블로그</title>
+    <style>
+        body {
+            text-align: center;
+        }
+
+        .right {
+            display: block;
+            margin-left: 50px;
+            text-align: left;
+        }
+
+        #username, a.page, a.write {
+            margin: 10px;
+            padding: 10px;
+            text-align: right;
+        }
+
+        a.write {
+            text-decoration: none;
+            border-radius: 10px;
+            background-color: blue;
+            color: white;
+        }
+
+        a#write:hover {
+            background-color: red;
+            color: black;
+        }
+
+        fieldset {
+            text-align: left;
+        }
+
+        div.good {
+            color: red;
+        }
+
+        a.page {
+            text-decoration: none;
+            color: black;
+            background-color: LightGray;
+            border-radius: 10%;
+        }
+
+        a.page:hover {
+            background-color: Gray;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <p id="username">
+        {% if username %}
+            <a href="/users/login/" class="write">
+            <b>{{ username }}</b>님 환영합니다!
+            </a>
+        {% else %}
+            <a href="/users/login/" class="write">로그인</a>
+        {% endif %}
+        <a class="write" href="add">새 글쓰기</a>
+    </p>
+    <hr>
+    <h1>블로그</h1>
+    <hr>
+    <form method="get" id="menu">
+        <div class="right">
+            <p>
+                <label><input id="keyword" name="search" value="{{ now_search }}" placeholder="검색"></label>
+                <label><input id="user" name="username_search" value="{{ now_username_search }}" placeholder="작성자"></label>
+            </p>
+            <label>
+                <select type="submit" name="sort">
+                {% for key in sort_list %}
+                    {% for k, v in key.items %}
+                    {% if v.check %}
+                        <option value="{{ k }}" selected>{{ v.name }}</option>
+                    {% else %}
+                        <option value="{{ k }}">{{ v.name }}</option>
+                    {% endif %}
+                    {% endfor %}
+                {% endfor %}
+            </select>
+            </label>
+            <input type="hidden" name="page" value="{{ now_page }}">
+        <button type="submit">조회</button>
+        </div>
+    </form>
+    {% if boards %}
+    <ul>
+      {% for board in boards %}
+        <fieldset>
+            <legend><h3><a href="{{ board.id }}" style="text-decoration: none; margin: 10px;">{{ board.title }}</a></h3></legend>
+            작성자 : <b><a href="/users/edit/{{ board.user.pk }}/">{{ board.username }}</a></b><br>
+            <div class="good">좋아요 ♥ {{ board.good_count }}</div>
+            조회수 : {{ board.visit }}<br>
+            생성된 날짜 : {{ board.create_date | date:'Y년 m월 d일 - h시 i분' }}<br>
+            수정된 날자 : {{ board.update_date | date:'Y년 m월 d일 - h시 i분' }}
+        </fieldset>
+      {% endfor %}
+    </ul>
+    {% else %}
+    <h2>게시물이 존재하지 않습니다.</h2>
+    {% endif %}
+    <br><br>
+    {% if page_list %}
+    {% for page in page_list %}
+        <button type="submit" form="menu" name="page" value="{{ page }}">{{ page }}</button>
+    {% endfor %}
+    {% endif %}
+    <br><br>
+</body>
+</html>

@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Users</title>
+    <style>
+    table {
+        text-align: left;
+        width: 100%;
+    }
+    table {
+        border: 1px solid black;
+        border-collapse: collapse;
+    }
+
+    th, td {
+        border: 1px solid #444444;
+    }
+
+    a {
+        text-decoration: none;
+    }
+
+    a.button {
+        border-radius: 5px;
+        background-color: blue;
+        color: white;
+        padding: 5px 10px;
+        font-size: 0.9em;
+    }
+
+    a.button:hover {
+        background-color: red;
+    }
+
+    tr {
+        text-align: center;
+    }
+    </style>
+</head>
+<body>
+    <div class="center">
+        <table>
+        <tr>
+            <th style="font-size: 2em; text-align: left">
+                <img style="vertical-align: middle;" height="50px" width="50px" src="data:image/{{ image.exi }};base64, {{image.data}}" alt="#">
+                {{ user.username }}
+            </th>
+            <th>
+                <form method="get"><button type="submit" name="edit" value="true" style="padding: 10px 30px">편집</button></form>
+            </th>
+        </tr>
+
+        <tr><th colspan="2">
+        </th></tr>
+
+        <tr>
+            <td><b>생성일</b></td>
+            <td>{{ user.date_joined | date:'Y년 m월 d일 - h시 i분' }}</td>
+        </tr>
+        <tr>
+            <td><b>아이디</b></td>
+            <td>{{ user.username }}</td>
+        </tr>
+        <tr>
+            <td><b>비밀번호</b></td>
+            <td>-</td>
+        </tr>
+        <tr>
+            <td><b>이메일</b></td>
+            <td>{{ user.email }}</td>
+        </tr>
+
+        <tr><th colspan="2" style="font-size: 1.5em; text-align: left">작성한 블로그</th></tr>
+        {% if boards %}
+            {% for board in boards %}
+            <tr><td colspan="2" style="text-align: left; padding-left: 10px; font-weight: bold">
+                <p><a href="/boards/{{ board.pk }}/">{{ board.title }}</a></p>
+            </td></tr>
+            {% endfor %}
+        {% else %}
+            <tr><td colspan="2">
+                <p>작성한 블로그가 없습니다.</p>
+            </td></tr>
+        {% endif %}
+        </table>
+        <p><a class="button" href="/boards/">게시판</a></p>
+    </div>
+</body>
+</html>
