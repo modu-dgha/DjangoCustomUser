@@ -1,4 +1,80 @@
 # Database Schema
+<details>
+    <summary>Text Schema</summary>
+
+```sql
+Table board_board {
+   title: text
+   content: text
+   create_date: datetime
+   update_date: datetime
+   user_id: bigint
+   username: text
+   good_count: integer
+   visit: integer
+   id: integer
+}
+Table board_board_command {
+   board_id: bigint
+   command_id: bigint
+   id: integer
+}
+Table board_board_good {
+   board_id: bigint
+   user_id: bigint
+   id: integer
+}
+Table board_board_tag {
+   board_id: bigint
+   tag_id: bigint
+   id: integer
+}
+Table board_command {
+   content: text
+   user_id: bigint
+   create_date: datetime
+   update_date: datetime
+   id: integer
+}
+Table board_tag {
+   tag_name: varchar(50)
+   id: integer
+}
+Table users_user {
+   last_login: datetime
+   is_superuser: bool
+   username: varchar(256)
+   email: varchar(254)
+   is_staff: bool
+   is_active: bool
+   date_joined: datetime
+   password: varchar(256)
+   profile_image: varchar(100)
+   id: integer
+}
+Table users_user_followers {
+   from_user_id: bigint
+   to_user_id: bigint
+   id: integer
+}
+Table users_user_following {
+   from_user_id: bigint
+   to_user_id: bigint
+   id: integer
+}
+Table users_user_good {
+   user_id: bigint
+   board_id: bigint
+   id: integer
+}
+Table users_user_groups {
+   user_id: bigint
+   group_id: integer
+   id: integer
+}
+```
+
+</details>
 
 ![](https://user-images.githubusercontent.com/117153297/199434078-50baeaa3-c488-48dd-aa36-4b5f51584844.svg)
 
@@ -44,10 +120,12 @@ class Command(models.Model):
 
 # Work
 ## User
- - [x] 회원가입
- - [x] 로그인, 로그아웃
- - [x] 팔로잉, 팔로우
- - [ ] 자신 팔로우 방지 구현
- - []
+ - [x] 회원가입 구현
+ - [x] 로그인 구현
+ - [x] 로그인, 로그아웃 구현
+ - [x] 팔로잉, 팔로우 구현
+ - [ ] 자신 팔로잉 방지 구현
+ - [x] 프로필 사진 변경
+ - [ ] 파일 다운로드 구현하기
  
 ## Board
