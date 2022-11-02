@@ -118,7 +118,7 @@ class Command(models.Model):
     user = models.ForeignKey(User, models.CASCADE)
 ```
 
-# Work
+# Works
 ## User
  - [x] 회원가입 구현
  - [x] 회원가입 정보 유효성 검사
