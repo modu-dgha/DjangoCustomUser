@@ -126,8 +126,8 @@ class CreateUserTest(TestCase):
         username, password, email = self.member_create()
         print("\n유저 로그인 테스트")
         self.member_login(username, password, email)
-        print("\n유저 수정 테스트")
-        self.member_edit()
+        # print("\n유저 수정 테스트")
+        # self.member_edit()
         # 게시판 로직
         print("\n게시판 생성 테스트")
         self.board_create()
