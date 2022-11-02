@@ -1,7 +1,8 @@
 from django.contrib import messages
+from django.core.exceptions import ObjectDoesNotExist
 from django.core.handlers.wsgi import WSGIRequest
 from django.core.paginator import Paginator
-from django.db.models import Q
+from django.db.models import Q, QuerySet
 from django.shortcuts import render, redirect
 from django.views import View
 
@@ -43,6 +44,7 @@ class ListBoard(View):  # boards/   boards
         page = request.GET.get('page', 1)
         sort = request.GET.get('sort', 'create_date_new')
         search = request.GET.get('search', '')
+        tag = request.GET.get("tag", "")
         username_search = request.GET.get('username_search', '')
         sort_list = [
             {'create_date_new': {"name": '최신 생성일 순', 'check': sort == 'create_date_new'}},
@@ -54,16 +56,26 @@ class ListBoard(View):  # boards/   boards
         ]
 
         user = get_user(request)
-        content = {'now_page': page,
-                   'now_sort': sort,
-                   'now_search': search,
-                   'sort_list': sort_list,
-                   'now_username_search': username_search,
-                   }
+        content = {
+           'now_page': page,
+           'now_sort': sort,
+           'now_search': search,
+           'sort_list': sort_list,
+           'now_username_search': username_search,
+           'tag': tag
+        }
         if user is not None:
             content["username"] = user.username
 
-        boards = Board.objects.filter(title__icontains=search).filter(username__icontains=username_search)
+        boards = Board.objects\
+            .filter(title__icontains=search)\
+            .filter(username__icontains=username_search)
+
+        if tag:
+            try:
+                boards = boards.filter(tag__id=Tag.objects.get(tag_name=tag.lower()).pk)
+            except ObjectDoesNotExist:
+                boards = Board.objects.filter(pk=0)
 
         if sort == 'create_date_new':
             board_list = boards.order_by('-create_date')
@@ -77,7 +89,6 @@ class ListBoard(View):  # boards/   boards
             board_list = boards.order_by('visit')
         else:
             board_list = boards.order_by('good_count')
-
         paginator = Paginator(board_list.all(), 5)
         page = paginator.get_page(page)
 
@@ -187,11 +198,13 @@ class EditBoard(View):  # boards/<int:board_id>/edit/    board-edit
         if user is None or board.user != user:
             return redirect(f'/users/login/?next=/boards/{board_id}/edit/')
         else:
+            if len(board.tag.all()) != 0: tag_value = "#" + " #".join(list(tags.tag_name for tags in board.tag.all()))
+            else: tag_value = ""
             content = {
                 "title": board.title,
                 "content": board.content,
                 "board_id": board_id,
-                "tags": "#" + " #".join(list(tags.tag_name for tags in board.tag.all()))
+                "tags": tag_value
             }
             return render(request, 'item/board_edit.html', content)
 
@@ -209,9 +222,11 @@ class EditBoard(View):  # boards/<int:board_id>/edit/    board-edit
             board = Board.objects.get(pk=board_id)
             board.title = title
             board.content = content
+            board.tag.clear()
             for tag in tags:
                 board.tag.add(tag)
             board.save()
+            print(board)
             return redirect(f"/boards/{board.pk}/")
 
 
