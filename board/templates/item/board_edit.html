@@ -52,9 +52,9 @@
         <input name="tag" placeholder="태그 #으로 구분" value="{{ tags }}">
     </label>
 
-      <p><label>
-          <textarea name="content" placeholder="내용">{{ content }}</textarea>
-      </label></p>
+    <p><label>
+      <textarea name="content" placeholder="내용">{{ content }}</textarea>
+    </label></p>
         {% if messages %}
             {% for message in messages %}
             <div class="{{ message.tags }}">{{ message.message }}</div>
