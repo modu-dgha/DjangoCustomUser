@@ -70,8 +70,9 @@
     <form method="get" id="menu">
         <div class="right">
             <p>
-                <label><input id="keyword" name="search" value="{{ now_search }}" placeholder="검색"></label>
-                <label><input id="user" name="username_search" value="{{ now_username_search }}" placeholder="작성자"></label>
+                <label><input name="search" value="{{ now_search }}" placeholder="검색"></label>
+                <label><input name="username_search" value="{{ now_username_search }}" placeholder="작성자"></label>
+                <label><input name="tag" value="{{ tag }}" placeholder="태그"></label>
             </p>
             <label>
                 <select type="submit" name="sort">
@@ -88,6 +89,7 @@
             </label>
             <input type="hidden" name="page" value="{{ now_page }}">
         <button type="submit">조회</button>
+        <button type="reset" onclick="location.href='/boards/?page={{ now_page }}'">초기화</button>
         </div>
     </form>
     {% if boards %}
@@ -97,6 +99,19 @@
             <legend><h3><a href="{{ board.id }}" style="text-decoration: none; margin: 10px;">{{ board.title }}</a></h3></legend>
             작성자 : <b><a href="/users/edit/{{ board.user.pk }}/">{{ board.username }}</a></b><br>
             <div class="good">좋아요 ♥ {{ board.good_count }}</div>
+            {% if board.tag.all %}
+                {% for tag in board.tag.all %}
+                    <button
+                        form="menu"
+                        name="tag"
+                        value="{{ tag }}"
+                        type="submit"
+                        style="background: darkgray; display: inline; padding: 5px; margin: 5px; border-radius: 5px; border: none">
+                    {{ tag }}
+                    </button>
+                {% endfor %}
+                <br>
+            {% endif %}
             조회수 : {{ board.visit }}<br>
             생성된 날짜 : {{ board.create_date | date:'Y년 m월 d일 - h시 i분' }}<br>
             수정된 날자 : {{ board.update_date | date:'Y년 m월 d일 - h시 i분' }}
