@@ -1,4 +1,5 @@
 import base64
+import collections
 import uuid
 from re import match
 
@@ -24,9 +25,11 @@ def get_user(request):
 def set_id(key, value):
     if len(ID_REPOSITORY) != 0 and value in list(ID_REPOSITORY.values()):
         # 존재하는 값 일때 삭제
-        for k, v in ID_REPOSITORY.items():
+        keys = list(ID_REPOSITORY.keys())
+        for k in keys:
             if ID_REPOSITORY[k] == value:
                 del ID_REPOSITORY[k]
+                pass
     ID_REPOSITORY[key] = value
 
 
