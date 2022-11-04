@@ -1,3 +1,13 @@
+# Menu
+
+- Database Schema
+    - [User](https://github.com/modu-dgha/DjangoCustomUser#user)
+    - [Board](https://github.com/modu-dgha/DjangoCustomUser#board)
+
+- Works
+    - [User](https://github.com/modu-dgha/DjangoCustomUser#user-1)
+    - [Board](https://github.com/modu-dgha/DjangoCustomUser#board-1)
+    - [Test](https://github.com/modu-dgha/DjangoCustomUser#test)
 # Database Schema
 <details>
     <summary>Text Schema</summary>
