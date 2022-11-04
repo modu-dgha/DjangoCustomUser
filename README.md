@@ -86,8 +86,13 @@ Table users_user_groups {
 
 </details>
 
+![](https://user-images.githubusercontent.com/117153297/199871327-2fd7e9f1-a274-48d8-95f3-9e45ccfdae98.svg)
+
+---
+
 ![](https://user-images.githubusercontent.com/117153297/199434078-50baeaa3-c488-48dd-aa36-4b5f51584844.svg)
 
+    
 ## User
 ```py
 class User(AbstractUser):
